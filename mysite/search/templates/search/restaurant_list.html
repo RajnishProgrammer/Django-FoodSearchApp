@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>All Restaurants</h2>
+
+<form method="get" action="{% url 'restaurant_list'%}">
+    <input type="text" name="q" placeholder="Search restaurants..." value="{{ request.GET.q }}">
+    <button type="submit">Search</button>
+</form>
+{% for r in restaurants %}
+<div style="margin-bottom: 20px; border-bottom: 1px solid #ccc;">
+    <h3>{{ r.name }}</h3>
+    <p><strong>City:</strong> {{ r.city }}</p>
+    <p><strong>Cuisines:</strong> {{ r.cuisines }}</p>
+    <p><strong>Rating:</strong> {{ r.user_rating }} ({{ r.user_rating_votes }} votes)</p>
+</div>
+{% empty %}
+<p>No restaurants found.</p>
+{% endfor %}
+
+<div class="pagination">
+    {% if is_paginated %}
+    <span>
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+    {% endif %}
+</div>
+{% endblock %}

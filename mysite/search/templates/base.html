@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Food Search App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        nav form {
+            margin: 0;
+        }
+
+        nav input[type="text"] {
+            padding: 6px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        nav button {
+            padding: 6px 12px;
+            font-size: 14px;
+            margin-left: 4px;
+            background-color: #ff9800;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        a {
+            color: #ff9800;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav style="display: flex; justify-content: space-between; align-items: center;">
+        <h1><a href="/">🍽️ Food Finder</a></h1>
+
+        {% if request.user.is_authenticated %}
+        👤 {{ request.user.username }}
+        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign Up</a>
+        {% endif %}
+
+        {% if request.session.user_city %}
+        <span>📍 {{ request.session.user_city }} | <a href="{% url 'set_city' %}" style="color: #fff;">Change</a></span>
+        {% else %}
+        <a href="{% url 'set_city' %}" style="color: #fff;">Set your location</a>
+        {% endif %}
+
+        <form method="get" action="{% url 'smart_search' %}">
+            <input type="text" name="q" placeholder="Search food or restaurants..." value="{{ request.GET.q }}">
+            <button type="submit">Search</button>
+        </form>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+
+</html>

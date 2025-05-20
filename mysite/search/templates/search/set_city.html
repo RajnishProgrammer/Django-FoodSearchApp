@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Where are you located?</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="city" placeholder="Enter your city..." required>
+    <button type="submit">Set Location</button>
+</form>
+{% endblock %}

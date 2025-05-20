@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Search Results for Foods</h2>
+
+{% if menu_items %}
+{% for item in menu_items %}
+<div style="margin-bottom: 15px;">
+    <strong>{{ item.name }}</strong> – ₹{{ item.price }}<br>
+    <em>{{ item.restaurant.name }}</em> ({{ item.restaurant.city }})
+</div>
+{% endfor %}
+{% else %}
+<p>No food items found matching your search.</p>
+{% endif %}
+
+<div class="pagination">
+    {% if is_paginated %}
+    {% if page_obj.has_previous %}
+    <a href="?q={{ request.GET.q }}&page=1">First</a>
+    <a href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+    <a href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">Next</a>
+    <a href="?q={{ request.GET.q }}&page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
